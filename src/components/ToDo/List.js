@@ -1,7 +1,10 @@
 import React from 'react'
+import Task from './Task'
 
 const List = (props) => (
-    <div>List</div>
+    <div>
+        <Task />
+    </div>
 )
 
 export default List
