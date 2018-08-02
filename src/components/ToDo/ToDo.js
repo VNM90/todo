@@ -4,6 +4,13 @@ import List from './List'
 import Container from '../Container';
 
 class ToDo extends React.Component {
+    state = {
+        tasks: [
+            {name: 'Umyj psa', uid: 'asdadsda'},
+            {name: 'Umyj ręce', uid: 'asdadsds'},
+            {name: 'Umyj się', uid: 'asdadsdb'}
+        ]
+    }
     render() {
         return (
             <div>
@@ -11,7 +18,10 @@ class ToDo extends React.Component {
                 <Form />
                 </Container>
                 <Container>
-                <List />
+                <List 
+                    tasksProp = {this.state.tasks}
+                    deleteTaskProp={(uid)=>alert(uid)}
+                />
                 </Container>
             </div>
         )

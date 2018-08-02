@@ -3,7 +3,13 @@ import Task from './Task'
 
 const List = (props) => (
     <div>
-        <Task />
+        {props.tasksProp.map(task =>(
+        <Task
+            nameProp = {task.name}
+            deleteTaskProp2 = {() => props.deleteTaskProp(task.uid)}
+        />
+        ))}
+        
     </div>
 )
 
