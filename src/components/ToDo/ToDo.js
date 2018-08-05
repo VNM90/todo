@@ -1,40 +1,99 @@
-import React from 'react'
-import Form from './Form'
-import List from './List'
-import Container from '../Container';
+import React from "react";
+import Form from "./Form";
+import List from "./List";
+import Container from "../Container";
+import Search from "./Search";
 
 class ToDo extends React.Component {
-    state = {
-        tasks: [
-            {name: 'Umyj psa', uid: 'asdadsda'},
-            {name: 'Umyj ręce', uid: 'asdadsds'},
-            {name: 'Umyj się', uid: 'asdadsdb'}
-        ]
-    }
-    
-    deleteTask = (taskUid) => {
-        const newTasks = this.state.tasks.filter(task => taskUid !== task.uid)
+  constructor(props) {
+    super(props);
+    this.state = {
+      tasks: [
+        { name: "Umyj psa", uid: "1", isCompleted: false },
+        { name: "Umyj ręce", uid: "2", isCompleted: false },
+        { name: "Umyj się", uid: "3", isCompleted: false }
+      ],
+      newTaskName: "New task",
+      searchPhrase: ""
+    };
+  }
+  searchPhraseChangeHandler = (event, newValue) => {
+    this.setState({
+      searchPhrase: newValue
+    });
+  };
 
-        this.setState({
-            tasks: newTasks
-        })
-    }
+  onNewTaskChange = (event, newValue) =>
+    this.setState({
+      newTaskName: newValue
+    });
 
-    render() {
-        return (
-            <div>
-                <Container>
-                <Form />
-                </Container>
-                <Container>
-                <List 
-                    tasksProp = {this.state.tasks}
-                    deleteTaskProp={this.deleteTask}
-                />
-                </Container>
-            </div>
-        )
-    }
+  addTask = () => {
+    const newTaskName = this.state.newTaskName;
+    if (newTaskName === "") return;
+    const newTask = {
+      name: this.state.newTaskName,
+      uid: Date.now()
+    };
+
+    const newTasks = this.state.tasks.concat(newTask);
+    this.setState({
+      tasks: newTasks
+    });
+  };
+
+  deleteTask = taskUid => {
+    const newTasks = this.state.tasks.filter(task => taskUid !== task.uid);
+
+    this.setState({
+      tasks: newTasks
+    });
+  };
+
+  render() {
+    const searchNamesInNewArray = array => {
+      let searchNames = [];
+
+      if (this.state.searchPhrase === "") {
+        searchNames = [];
+      } else {
+        searchNames = array
+          .map(element => element)
+          .filter(
+            element =>
+              element.name.toUpperCase().indexOf(this.state.searchPhrase) >=
+                0 ||
+              element.name.toLowerCase().indexOf(this.state.searchPhrase) >= 0
+          );
+      }
+
+      return searchNames;
+    };
+    return (
+      <div>
+        <Container>
+          <Form
+            onNewTaskChangeProp={this.onNewTaskChange}
+            newTaskNameProp={this.state.newTaskName}
+            addTaskProp={this.addTask}
+          />
+        </Container>
+        <Container>
+          <Search
+            searchPhraseChangeHandler={this.searchPhraseChangeHandler}
+            searchPhrase={this.state.searchPhrase}
+          />
+          <List
+            tasksProp={searchNamesInNewArray(this.state.tasks)}
+            deleteTaskProp={this.deleteTask}
+          />
+        </Container>
+        <Container>
+          <List tasksProp={this.state.tasks} deleteTaskProp={this.deleteTask} />
+        </Container>
+      </div>
+    );
+  }
 }
 
-export default ToDo
+export default ToDo;
