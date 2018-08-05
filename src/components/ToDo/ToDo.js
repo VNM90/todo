@@ -17,6 +17,29 @@ class ToDo extends React.Component {
       searchPhrase: ""
     };
   }
+
+  componentWillUpdate(nextProps, nextState) {
+    localStorage.setItem("TO-DO", JSON.stringify(nextState.tasks));
+  }
+
+  componentWillMount() {
+    localStorage.getItem("TO-DO") &&
+      this.setState({
+        tasks: JSON.parse(localStorage.getItem("TO-DO"))
+      });
+  }
+
+  componentDidMount() {
+    const lastState = JSON.parse(localStorage.getItem("TO-DO"));
+
+    if (lastState === null) return;
+
+    this.setState(this.lastState);
+  }
+
+  componentWillUnmount() {
+    localStorage.setItem("TO-DO", JSON.stringify(this.state.tasks));
+  }
   searchPhraseChangeHandler = (event, newValue) => {
     this.setState({
       searchPhrase: newValue
@@ -69,6 +92,7 @@ class ToDo extends React.Component {
 
       return searchNames;
     };
+
     return (
       <div>
         <Container>
