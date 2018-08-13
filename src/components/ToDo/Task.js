@@ -3,16 +3,21 @@ import MenuItem from "material-ui/MenuItem";
 import Delete from "material-ui/svg-icons/action/delete";
 import Checkbox from "material-ui/Checkbox";
 
-const Task = props => (
-  <MenuItem
+const Task = props => {
+  console.log('props: ', props.task)
+  return (
+    <MenuItem
     primaryText={props.nameProp}
-    leftIcon={<Delete onClick={props.deleteTaskProp2} />}
+    // leftIcon={<Delete onClick={props.deleteTaskProp2} />}
     rightIcon={
       <Checkbox
-      // checked={props.isCompleted}
+        checked={props.task.isCompleted}
+        onChange={() => props.toggleTask(props.task.key)}
+        value="checked"
       />
     }
   />
-);
+  );
+  };
 
 export default Task;

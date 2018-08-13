@@ -9,9 +9,9 @@ class ToDo extends React.Component {
     super(props);
     this.state = {
       tasks: [
-        { name: "Umyj psa", uid: "1", isCompleted: false },
-        { name: "Umyj ręce", uid: "2", isCompleted: false },
-        { name: "Umyj się", uid: "3", isCompleted: false }
+        { name: "Umyj psa", key: "1", isCompleted: true },
+        { name: "Umyj ręce", key: "2", isCompleted: false },
+        { name: "Umyj się", key: "3", isCompleted: false }
       ],
       newTaskName: "New task",
       searchPhrase: ""
@@ -51,12 +51,28 @@ class ToDo extends React.Component {
       newTaskName: newValue
     });
 
+  toggleTask = key => {
+    this.setState({
+      tasks: this.state.tasks.map(task => {
+        if (task.key === key) {
+          return {
+            ...task,
+            isCompleted: !task.isCompleted
+          };
+        } else {
+          return task;
+        }
+      })
+    });
+  };
+
   addTask = () => {
     const newTaskName = this.state.newTaskName;
     if (newTaskName === "") return;
     const newTask = {
       name: this.state.newTaskName,
-      uid: Date.now()
+      isCompleted: false,
+      key: Date.now()
     };
 
     const newTasks = this.state.tasks.concat(newTask);
@@ -110,10 +126,15 @@ class ToDo extends React.Component {
           <List
             tasksProp={searchNamesInNewArray(this.state.tasks)}
             deleteTaskProp={this.deleteTask}
+            toggleTask={this.toggleTask}
           />
         </Container>
         <Container>
-          <List tasksProp={this.state.tasks} deleteTaskProp={this.deleteTask} />
+          <List
+            tasksProp={this.state.tasks}
+            deleteTaskProp={this.deleteTask}
+            toggleTask={this.toggleTask}
+          />
         </Container>
       </div>
     );
