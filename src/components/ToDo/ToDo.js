@@ -82,7 +82,7 @@ class ToDo extends React.Component {
   };
 
   deleteTask = taskUid => {
-    const newTasks = this.state.tasks.filter(task => taskUid !== task.uid);
+    const newTasks = this.state.tasks.filter(task => taskUid !== task.key);
 
     this.setState({
       tasks: newTasks
