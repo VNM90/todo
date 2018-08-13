@@ -4,7 +4,7 @@ import Delete from "material-ui/svg-icons/action/delete";
 import Checkbox from "material-ui/Checkbox";
 
 const Task = props => {
-  console.log('props: ', props.task)
+
   return (
     <MenuItem
     primaryText={props.nameProp}
@@ -12,7 +12,7 @@ const Task = props => {
     rightIcon={
       <Checkbox
         checked={props.task.isCompleted}
-        onChange={() => props.toggleTask(props.task.key)}
+        onCheck={() => props.toggleTask(props.task.key)}
         value="checked"
       />
     }
